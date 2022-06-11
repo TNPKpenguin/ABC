@@ -76,7 +76,7 @@ function diagnosis(){
         return "ภายใน 3 วัน อาจเป็นมะเร็งเม็ดเลือดขาว มะเร็งต่อมน้ำเหลือง";
     }
     else{
-        return "ไม่รู้";
+        return "ลักษณะอาการไม่แน่ชัดควรปรึกษาแพทย์ค้ะ";
     }
 }
 
@@ -92,8 +92,8 @@ function compare(diagnose){
 function tokenizer(){
     buildThaiDictionary();
 
-
-   $('#tokenize').click(function() {
-     $('#result').html( tokenize($("สวัสดีครับ ผมชื่อ").val()).join('|') );
-   });
+    $('#tokenize').click(function() {
+      $('#result').html( tokenize($("สวัสดีครับ ผมชื่อ").val()).join('|') );
+    });
+    console.log
 }
