@@ -34,7 +34,7 @@ function getBotResponse(input) {
     }
     if(input == "no"){
         console.log(symptom);
-        return "ผลการวินิจฉัยคือ " + diagnosis();
+        return "ผลการวินิจฉัยคือ คนไข้มีโอกาศจะเป็นโรค " + diagnosis();
     }
     else{
         return "ลองพิมพ์ใหม่อีกครั้งค่ะ"
