@@ -1,14 +1,17 @@
-let yes = ["ไม่", "ไม่เคย"];
+let yes = ["ใช่", "เคย", "มี"];
+let no = ["ไม่", "ป่าว"];
+
 let symptom = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 let round = 0;
 let is_continue = true;
-let symptom_text = ["ไม่ค่อยรู้สึกตัว ปวดศรีษะมาก อาเจียนรุนแรง", "คอแข็ง กระหม่อมโปร่งตึงในเด็กเล็ก", "เคยเข้าไปในดงมาลาเรีย", "เคยถูกสุนัขหรือแมวกัดหรือข่วน กลัวน้ำ กลัวลม", "แขนขาอ่อนแรง อัมพาตฉับพลัน", "เหงื่อออก ตัวเย็น กระสับกระส่าย ชีพจรเบาเร็ว", "มีไข้นานเกิน 1 เดือน", "ไอและน้ำหนักตัวลดฮวบ", "ปวดข้อนิ้วมือ 2 ข้าง ผมร่วง", "จับไข้หนาวสั่นวันเว้นวันและเคยไปในดงมาลาเรีย", "มีจุดแดงที่เยื่อบุตา ใต้เล็บ", "มีจุดแดงจ้ำเขียวขึ้นตามตัว หรือ มีก้อนบวมข้างคอ"];
+let symptom_text = ["ไม่ค่อยรู้สึกตัว ปวดศรีษะมาก อาเจียนรุนแรง", "คอแข็ง กระหม่อมโปร่งตึงในเด็กเล็ก", "เข้าไปในดงมาลาเรีย", "ถูกสุนัขหรือแมวกัดหรือข่วน กลัวน้ำ กลัวลม", "แขนขาอ่อนแรง อัมพาตฉับพลัน", "เหงื่อออก ตัวเย็น กระสับกระส่าย ชีพจรเบาเร็ว", "มีไข้นานเกิน 1 เดือน", "ไอและน้ำหนักตัวลดฮวบ", "ปวดข้อนิ้วมือ 2 ข้าง ผมร่วง", "จับไข้หนาวสั่นวันเว้นวันและเคยไปในดงมาลาเรีย", "มีจุดแดงที่เยื่อบุตา ใต้เล็บ", "มีจุดแดงจ้ำเขียวขึ้นตามตัว หรือ มีก้อนบวมข้างคอ"];
 function getBotResponse(input) {
-    if(input != "yes" && input != "no"){
+    console.log(tokenizer(input));
+    if(tokenizer(input) != "yes" && tokenizer(input) != "no"){
         return "แล้วมีอาการ" + symptom_text[round] + "อย่างใดอย่างหนึ่งหรือป่าวคะ";
     }
     while(is_continue){
-        if(input == "no"){
+        if(tokenizer(input) == "no"){
             if(round < 1){
                 round = 4;
             }
@@ -17,7 +20,7 @@ function getBotResponse(input) {
             }
             return "มีอาการ" + symptom_text[round] + "หรือป่าวคะ";
         }
-        else if(input == "yes"){
+        else if(tokenizer(input) == "yes"){
             symptom[round] = 1;
             if(round < 1){
                 round = round + 1;
@@ -32,9 +35,9 @@ function getBotResponse(input) {
             return "ลองพิมพ์ใหม่อีกครั้งค่ะ"
         }
     }
-    if(input == "no"){
+    if(tokenizer(input) == "no"){
         console.log(symptom);
-        return "ผลการวินิจฉัยคือ คนไข้มีโอกาศจะเป็นโรค " + diagnosis();
+        return "ผลการวินิจฉัยคือ คนไข้มีโอกาศจะเป็นโรค " + diagnosis() + "ค่ะ";
     }
     else{
         return "ลองพิมพ์ใหม่อีกครั้งค่ะ"
@@ -89,11 +92,18 @@ function compare(diagnose){
     return true;
 }
 
-function tokenizer(){
-    buildThaiDictionary();
+function tokenizer(input){
+    for(let i=0; i<input.length-2; i++){
+        sub_str = "";
+        sub_str += input[i] + input[i+1] + input[i+2];
+        for(let s=0; s<2; s++){
+            if(sub_str == yes[s]){
+                return "yes";
+            }
+            else if(sub_str == no[s]){
+                return "no";
+            }
+        } 
 
-    $('#tokenize').click(function() {
-      $('#result').html( tokenize($("สวัสดีครับ ผมชื่อ").val()).join('|') );
-    });
-    console.log
+    }
 }
