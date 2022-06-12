@@ -4,10 +4,13 @@ let no = ["ไม่", "ป่าว"];
 let symptom = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 let round = 0;
 let is_continue = true;
+let st_time = true;
+let finish = false
 let symptom_text = ["ไม่ค่อยรู้สึกตัว ปวดศรีษะมาก อาเจียนรุนแรง", "คอแข็ง กระหม่อมโปร่งตึงในเด็กเล็ก", "เข้าไปในดงมาลาเรีย", "ถูกสุนัขหรือแมวกัดหรือข่วน กลัวน้ำ กลัวลม", "แขนขาอ่อนแรง อัมพาตฉับพลัน", "เหงื่อออก ตัวเย็น กระสับกระส่าย ชีพจรเบาเร็ว", "มีไข้นานเกิน 1 เดือน", "ไอและน้ำหนักตัวลดฮวบ", "ปวดข้อนิ้วมือ 2 ข้าง ผมร่วง", "จับไข้หนาวสั่นวันเว้นวันและเคยไปในดงมาลาเรีย", "มีจุดแดงที่เยื่อบุตา ใต้เล็บ", "มีจุดแดงจ้ำเขียวขึ้นตามตัว หรือ มีก้อนบวมข้างคอ"];
 function getBotResponse(input) {
     console.log(tokenizer(input));
-    if(tokenizer(input) != "yes" && tokenizer(input) != "no"){
+    if(st_time){
+        st_time = false;
         return "แล้วมีอาการ" + symptom_text[round] + "อย่างใดอย่างหนึ่งหรือป่าวคะ";
     }
     while(is_continue){
@@ -18,7 +21,7 @@ function getBotResponse(input) {
             else{
                 round = round + 1;
             }
-            return "มีอาการ" + symptom_text[round] + "หรือป่าวคะ";
+            return "เคยมีอาการ" + symptom_text[round] + "หรือป่าวคะ";
         }
         else if(tokenizer(input) == "yes"){
             symptom[round] = 1;
@@ -28,7 +31,7 @@ function getBotResponse(input) {
             }
             else{
                 is_continue = false;
-                return "มีอาการอะไรเพิ่มเติมหรือป่าวคะ";
+                return "มีอาการอะไรเพิ่มเติมหรือป่าวคะ บอกมาได้เลยค่ะ";
             }
         }
         else{
@@ -36,8 +39,12 @@ function getBotResponse(input) {
         }
     }
     if(tokenizer(input) == "no"){
-        console.log(symptom);
-        return "ผลการวินิจฉัยคือ คนไข้มีโอกาศจะเป็นโรค " + diagnosis() + "ค่ะ";
+        finish = true;
+        return "ผลการวินิจฉัยคือ คนไข้มีโอกาศจะเป็นโรค " + diagnosis() + "ค่ะ\nแนะนำให้พบเเพทย์เพื่อวินิจฉัยและรักษาโรคในลำดับถัดไปค่ะ      ***แหล่งรักษาพยาบาล  โรงพยาบาลหัวเฉียว คลีนิกหัวเฉียว***";
+    }
+    else if(tokenizer(input) != "yes" && tokenizer(input) != "no"){
+        finish = true;
+        return "ผลการวินิจฉัยคือ คนไข้มีโอกาศจะเป็นโรค " + diagnosis() + "ค่ะ\nแนะนำให้พบเเพทย์เพื่อวินิจฉัยและรักษาโรคในลำดับถัดไปค่ะ      ***แหล่งรักษาพยาบาล  โรงพยาบาลหัวเฉียว คลีนิกหัวเฉียว***";
     }
     else{
         return "ลองพิมพ์ใหม่อีกครั้งค่ะ"
@@ -97,7 +104,7 @@ function tokenizer(input){
         sub_str = "";
         sub_str += input[i] + input[i+1] + input[i+2];
         for(let s=0; s<2; s++){
-            if(sub_str == yes[s]){
+            if(sub_str == yes[s] || sub_str[0] + sub_str[1] == "มี"){
                 return "yes";
             }
             else if(sub_str == no[s]){
