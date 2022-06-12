@@ -11,7 +11,7 @@ function getBotResponse(input) {
     console.log(tokenizer(input));
     if(st_time){
         st_time = false;
-        return "แล้วมีอาการ" + symptom_text[round] + "อย่างใดอย่างหนึ่งหรือป่าวคะ";
+        return "แล้วเคยมีอาการ" + symptom_text[round] + "อย่างใดอย่างหนึ่งหรือป่าวคะ";
     }
     while(is_continue){
         if(tokenizer(input) == "no"){
@@ -27,7 +27,7 @@ function getBotResponse(input) {
             symptom[round] = 1;
             if(round < 1){
                 round = round + 1;
-                return "มีอาการ" + symptom_text[round] + "หรือป่าวคะ";
+                return "เคยมีอาการ" + symptom_text[round] + "หรือป่าวคะ";
             }
             else{
                 is_continue = false;
