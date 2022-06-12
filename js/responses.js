@@ -18,8 +18,12 @@ function getBotResponse(input) {
             if(round < 1){
                 round = 4;
             }
-            else{
+            if(round >= 1){
                 round = round + 1;
+            }
+            if(round > 11){
+                is_continue = false
+                return "มีอาการอะไรเพิ่มเติมหรือป่าวคะ บอกมาได้เลยค่ะ";
             }
             return "เคยมีอาการ" + symptom_text[round] + "หรือป่าวคะ";
         }
@@ -38,7 +42,11 @@ function getBotResponse(input) {
             return "ลองพิมพ์ใหม่อีกครั้งค่ะ"
         }
     }
-    if(tokenizer(input) == "no"){
+    if(diagnosis() == "สบายใจได้ค่ะ จากการวินิจฉัย คุณไม่มีอาการใดๆค่ะ"){
+        finish = true;
+        return diagnosis();
+    }
+    else if(tokenizer(input) == "no"){
         finish = true;
         return "ผลการวินิจฉัยคือ คนไข้มีโอกาศจะเป็นโรค " + diagnosis() + "ค่ะ\nแนะนำให้พบเเพทย์เพื่อวินิจฉัยและรักษาโรคในลำดับถัดไปค่ะ      ***แหล่งรักษาพยาบาล  โรงพยาบาลหัวเฉียว คลีนิกหัวเฉียว***";
     }
